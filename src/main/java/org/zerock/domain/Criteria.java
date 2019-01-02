@@ -18,9 +18,11 @@ public class Criteria {
 			this.page = 1;
 			return;
 		}
+		this.page = page;
 	}
 	
 	public int getPage() {
+		System.out.println(page);
 		return page;
 	}
 	

@@ -1,5 +1,8 @@
 package org.zerock.domain;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class PageMaker {
 
 	
@@ -17,12 +20,12 @@ public class PageMaker {
 		this.startPage = startPage;
 	}
 
-	public int getEndPage() {
-		return endPage;
+	public int getStartPage() {
+		return startPage;
 	}
 
-	public void setEndPage(int endPage) {
-		this.endPage = endPage;
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
 	}
 
 	public boolean isPrev() {
@@ -40,6 +43,27 @@ public class PageMaker {
 	public void setNext(boolean next) {
 		this.next = next;
 	}
+
+	public int getDisplayPageNum() {
+		return displayPageNum;
+	}
+
+	public void setDisplayPageNum(int displayPageNum) {
+		this.displayPageNum = displayPageNum;
+	}
+
+	public Criteria getCri() {
+		return cri;
+	}
+
+	public int getEndPage() {
+		return endPage;
+	}
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+
 
 	public int getTotalCount() {
 		return totalCount;
@@ -65,6 +89,7 @@ public class PageMaker {
 		endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
 		
 		startPage = (endPage - displayPageNum) +1;
+
 		
 		int tempEndPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
 		
@@ -74,8 +99,19 @@ public class PageMaker {
 		
 		prev = startPage == 1 ? false : true;
 		
-		
 		next = endPage * cri.getPerPageNum() >= totalCount ? false : true;
+	}
+	
+	public String makeQuery(int page) {
+		
+		UriComponents uriComponents =
+				UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("perPageNum", cri.getPerPageNum())
+				.build();
+		
+		return uriComponents.toUriString();
+
 	}
 
 }
