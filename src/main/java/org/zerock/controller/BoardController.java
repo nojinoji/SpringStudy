@@ -80,7 +80,7 @@ public class BoardController {
 		model.addAttribute(service.read(bno));
 	}
 	
-	@RequestMapping(value = "/readPage", method = RequestMethod.POST)
+	@RequestMapping(value = "/removePage", method = RequestMethod.POST)
 	public String remove(@RequestParam("bno") int bno,  Criteria cri, RedirectAttributes rttr) throws Exception{
 		service.remove(bno);
 		
@@ -116,6 +116,23 @@ public class BoardController {
 		rttr.addFlashAttribute("msg","SUCCESS");
 		
 		return "redirect:/board/listAll";
+	}
+	
+	@RequestMapping(value = "/modifyPage", method = RequestMethod.GET)
+	public void modifyPagingGET(@RequestParam("bno") int bno, @ModelAttribute("cri") Criteria cri, Model model) throws Exception{
+		
+		model.addAttribute(service.read(bno));
+	}
+	
+	@RequestMapping(value = "/modifyPage", method = RequestMethod.POST)
+	public String modifyPagingPOST(BoardVO board, Criteria cri, RedirectAttributes rttr) throws Exception{
+		service.modify(board);
+		
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addFlashAttribute("msg","SUCCESS");
+		
+		return "redirect:/board/listPage";
 	}
 	
 	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
